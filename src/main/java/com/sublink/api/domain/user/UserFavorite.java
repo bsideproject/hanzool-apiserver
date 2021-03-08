@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sublink.api.domain.contents.Genre;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserFavorite {
-    public Map<Integer, Genre> genres = new HashMap(); //FIXME: check data type map or list
-    public Map<Integer, String> keyWords = new HashMap<>();
+    public List<Genre> genres = new ArrayList<>();
+    public List<String> keyWords = new ArrayList<>();
 
     public static UserFavorite parseJson(String input) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -34,11 +36,11 @@ public class UserFavorite {
         return ret;
     }
 
-    public Map<Integer, Genre> getGenres() {
+    public List<Genre> getGenres() {
         return genres;
     }
 
-    public Map<Integer, String> getKeyWords() {
+    public List<String> getKeyWords() {
         return keyWords;
     }
 }
