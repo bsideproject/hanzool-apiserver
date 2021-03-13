@@ -3,6 +3,7 @@ package com.sublink.api.domain.user;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sublink.api.utils;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserAccount {
@@ -23,14 +24,7 @@ public class UserAccount {
 
     @Override
     public String toString() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String ret = "";
-        try {
-            ret = objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return ret;
+        return utils.toJsonString(this);
     }
 
     public String getId() {

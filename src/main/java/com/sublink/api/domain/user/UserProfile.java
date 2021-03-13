@@ -3,19 +3,20 @@ package com.sublink.api.domain.user;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sublink.api.utils;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserProfile {
-    public int id;
+    public String userId;
     public String email;
     public String nickName;
     public String profilePath;
     public ArrayList<String> subsList = new ArrayList<>(); // FIXME: create Subscribe service class
-    public ArrayList<UserProfile> following = new ArrayList<>();
-    public ArrayList<UserProfile> followers = new ArrayList<>();
+    public ArrayList<Integer> following = new ArrayList<>();
+    public ArrayList<Integer> followers = new ArrayList<>();
     public UserFavorite favorite;
     public Date registered;
     public Date expired;
@@ -33,18 +34,11 @@ public class UserProfile {
 
     @Override
     public String toString() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String ret = "";
-        try {
-            ret = objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return ret;
+        return utils.toJsonString(this);
     }
 
-    public int getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
 
@@ -64,11 +58,11 @@ public class UserProfile {
         return subsList;
     }
 
-    public ArrayList<UserProfile> getFollowing() {
+    public ArrayList<Integer> getFollowing() {
         return following;
     }
 
-    public ArrayList<UserProfile> getFollowers() {
+    public ArrayList<Integer> getFollowers() {
         return followers;
     }
 
@@ -84,8 +78,8 @@ public class UserProfile {
         return expired;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setEmail(String email) {
@@ -104,11 +98,11 @@ public class UserProfile {
         this.subsList = subsList;
     }
 
-    public void setFollowing(ArrayList<UserProfile> following) {
+    public void setFollowing(ArrayList<Integer> following) {
         this.following = following;
     }
 
-    public void setFollowers(ArrayList<UserProfile> followers) {
+    public void setFollowers(ArrayList<Integer> followers) {
         this.followers = followers;
     }
 

@@ -1,25 +1,24 @@
 package com.sublink.api.database;
 
-import com.sublink.api.domain.user.UserAccount;
-import com.sublink.api.domain.user.UserFavorite;
-import com.sublink.api.domain.user.UserProfile;
+public interface DatabaseDriver extends UserDB, ContentDB {
+    enum ResultCode {
+        SUCCESS("Success"),
+        NOT_FOUND("Not_found"),
+        INTERNAL_ERROR("Internal Error"),
+        INVALID_INPUT("Invalid Input");
 
-public interface DatabaseDriver {
-    boolean WriteUserAccount(UserAccount ua);
 
-    boolean WriteUserProfile(UserProfile up);
+        final private String result;
 
-    boolean WriteUserFavorite(UserFavorite uf);
+        ResultCode(String result) {
+            this.result = result;
+        }
 
-    UserAccount ReadUserAccount(String id);
+        @Override
+        public String toString() {
+            return result;
+        }
+    }
 
-    UserFavorite ReadUserFavorite(String id);
-
-    UserProfile ReadUserProfile(String id);
-
-    boolean UpdateUserAccount(UserAccount ua);
-
-    boolean UpdateUserProfile(UserProfile up);
-
-    boolean UpdateUserFavorite(UserFavorite uf);
+    boolean Initialize();
 }

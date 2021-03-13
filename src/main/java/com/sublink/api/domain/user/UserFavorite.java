@@ -3,16 +3,18 @@ package com.sublink.api.domain.user;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sublink.api.domain.contents.Genre;
+import com.sublink.api.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserFavorite {
-    public List<Genre> genres = new ArrayList<>();
-    public List<String> keyWords = new ArrayList<>();
-    public List<Integer> videos = new ArrayList<>();
+
+    String userId;
+    List<Integer> genres = new ArrayList<>();
+    List<String> keyWords = new ArrayList<>();
+    List<Integer> contents = new ArrayList<>();
 
     public static UserFavorite parseJson(String input) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -27,17 +29,14 @@ public class UserFavorite {
 
     @Override
     public String toString() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String ret = "";
-        try {
-            ret = objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return ret;
+        return utils.toJsonString(this);
     }
 
-    public List<Genre> getGenres() {
+    public String getUserId() {
+        return userId;
+    }
+
+    public List<Integer> getGenres() {
         return genres;
     }
 
@@ -45,15 +44,23 @@ public class UserFavorite {
         return keyWords;
     }
 
-    public List<Integer> getVideos() {
-        return videos;
+    public List<Integer> getContents() {
+        return contents;
     }
 
-    public void setGenres(Map<Integer, Genre> genres) {
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setGenres(List<Integer> genres) {
         this.genres = genres;
     }
 
-    public void setKeyWords(Map<Integer, String> keyWords) {
+    public void setKeyWords(List<String> keyWords) {
         this.keyWords = keyWords;
+    }
+
+    public void setContents(List<Integer> contents) {
+        this.contents = contents;
     }
 }
