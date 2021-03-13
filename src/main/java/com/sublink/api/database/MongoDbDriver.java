@@ -5,7 +5,8 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.result.InsertOneResult;
+import com.mongodb.client.model.FindOneAndReplaceOptions;
+import com.mongodb.client.model.TextSearchOptions;
 import com.sublink.api.domain.contents.Content;
 import com.sublink.api.domain.contents.Credit;
 import com.sublink.api.domain.contents.Genre;
@@ -19,22 +20,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.*;
 
 public class MongoDbDriver implements DatabaseDriver {
-
-    public static void main(String[] args) {
-        MongoDbDriver db = new MongoDbDriver();
-        db.connectDB();
-        UserAccount ua = new UserAccount();
-        ua.setEmail("email");
-        ua.setId("1");
-        ua.setPassword("pass");
-
-        db.writeUserAccount(ua);
-        System.out.println(db.readUserAccountById("1"));
-
-    }
 
     private MongoClient mongoClient;
 
@@ -66,20 +54,20 @@ public class MongoDbDriver implements DatabaseDriver {
         return this.mongoClient.getDatabase(db).getCollection(collection);
     }
 
-    private boolean write(String db, String collection, Object input) {
-        MongoCollection<Document> mc = getCollection(db, collection);
+    private boolean write(MongoCollection<Document> collection, Bson key, Object input) {
         Document dc = Document.parse(input.toString());
-        InsertOneResult ret = mc.insertOne(dc);
-        if (ret.getInsertedId().isNull()) {
+        System.out.println(dc.toString());
+        Document ret = collection.findOneAndReplace(key, dc,
+                new FindOneAndReplaceOptions().upsert(true));
+        if (ret != null || ret.isEmpty()) {
             return false;
         }
         return true;
     }
 
-    private String read(String db, String collection, Bson condition) {
-        MongoCollection mc = getCollection(db, collection);
+    private String read(MongoCollection collection, Bson condition) {
         ArrayList<String> list = new ArrayList<>();
-        mc.find(condition).forEach(
+        collection.find(condition).forEach(
                 s -> list.add(((Document) s).toJson())
         );
         if (list.size() > 0) {
@@ -88,25 +76,38 @@ public class MongoDbDriver implements DatabaseDriver {
         return "";
     }
 
+    private List<String> readList(MongoCollection collection, Bson condition) {
+        ArrayList<String> list = new ArrayList<>();
+        collection.find(condition).forEach(
+                s -> list.add(((Document) s).toJson())
+
+        );
+
+        return list;
+    }
+
     @Override
     public boolean writeUserAccount(UserAccount ua) {
-        return write("user", "UserAccount", ua);
+        Bson key = eq("id", ua.getId());
+        return write(getCollection("user", "UserAccount"), key, ua);
     }
 
     @Override
     public boolean writeUserProfile(UserProfile up) {
-        return write("user", "UserProfile", up);
+        Bson key = eq("userId", up.getUserId());
+        return write(getCollection("user", "UserProfile"), key, up);
     }
 
     @Override
     public boolean writeUserFavorite(UserFavorite uf) {
-        return write("user", "UserFavorite", uf);
+        Bson key = eq("userId", uf.getUserId());
+        return write(getCollection("user", "UserFavorite"), key, uf);
     }
 
     @Override
     public UserAccount readUserAccountById(String id) {
         Bson cond = eq("id", id);
-        String ret = read("user", "UserAccount", cond);
+        String ret = read(getCollection("user", "UserAccount"), cond);
         if (ret.equals("")) {
             return null;
         }
@@ -116,7 +117,7 @@ public class MongoDbDriver implements DatabaseDriver {
     @Override
     public UserFavorite readUserFavoriteByUserId(String id) {
         Bson cond = eq("userId", id);
-        String ret = read("user", "UserFavorite", cond);
+        String ret = read(getCollection("user", "UserFavorite"), cond);
         if (ret.equals("")) {
             return null;
         }
@@ -126,7 +127,7 @@ public class MongoDbDriver implements DatabaseDriver {
     @Override
     public UserProfile readUserProfileByUserId(String id) {
         Bson cond = eq("userId", id);
-        String ret = read("user", "UserProfile", cond);
+        String ret = read(getCollection("user", "UserProfile"), cond);
         if (ret.equals("")) {
             return null;
         }
@@ -150,23 +151,26 @@ public class MongoDbDriver implements DatabaseDriver {
 
     @Override
     public boolean writeContent(Content c) {
-        return write("content", "Content", c);
+        Bson key = eq("id", c.getId());
+        return write(getCollection("content", "Content"), key, c);
     }
 
     @Override
     public boolean writeGenre(Genre g) {
-        return write("content", "Genre", g);
+        Bson key = eq("id", g.getId());
+        return write(getCollection("content", "Genre"), key, g);
     }
 
     @Override
     public boolean writeCredit(Credit c) {
-        return write("content", "Credit", c);
+        Bson key = eq("id", c.getId());
+        return write(getCollection("content", "Credit"), key, c);
     }
 
     @Override
     public Content readContentById(int id) {
         Bson cond = eq("id", id);
-        String ret = read("content", "Content", cond);
+        String ret = read(getCollection("content", "Content"), cond);
         if (ret.equals("")) {
             return null;
         }
@@ -175,6 +179,12 @@ public class MongoDbDriver implements DatabaseDriver {
 
     @Override
     public List<Content> readContentListByTitle(String title) {
+        Bson cond = regex("title", ".*" + title + ".*");
+        List<String> ret = readList(getCollection("content","Content"), cond);
+        ArrayList<Content> contents = new ArrayList<>();
+        ret.forEach(
+                s -> contents.add(Content.parseJson(s))
+        );
         return null;
     }
 
@@ -191,7 +201,7 @@ public class MongoDbDriver implements DatabaseDriver {
     @Override
     public Credit readCreditById(int id) {
         Bson cond = eq("id", id);
-        String ret = read("content", "Credit", cond);
+        String ret = read(getCollection("content", "Credit"), cond);
         if (ret.equals("")) {
             return null;
         }
