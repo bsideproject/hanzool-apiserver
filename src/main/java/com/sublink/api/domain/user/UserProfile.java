@@ -1,11 +1,13 @@
 package com.sublink.api.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserProfile {
     public int id;
     public String email;
@@ -15,7 +17,6 @@ public class UserProfile {
     public ArrayList<UserProfile> following = new ArrayList<>();
     public ArrayList<UserProfile> followers = new ArrayList<>();
     public UserFavorite favorite;
-    public boolean mania;
     public Date registered;
     public Date expired;
 
@@ -75,15 +76,51 @@ public class UserProfile {
         return favorite;
     }
 
-    public boolean isMania() {
-        return mania;
-    }
-
     public Date getRegistered() {
         return registered;
     }
 
     public Date getExpired() {
         return expired;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public void setProfilePath(String profilePath) {
+        this.profilePath = profilePath;
+    }
+
+    public void setSubsList(ArrayList<String> subsList) {
+        this.subsList = subsList;
+    }
+
+    public void setFollowing(ArrayList<UserProfile> following) {
+        this.following = following;
+    }
+
+    public void setFollowers(ArrayList<UserProfile> followers) {
+        this.followers = followers;
+    }
+
+    public void setFavorite(UserFavorite favorite) {
+        this.favorite = favorite;
+    }
+
+    public void setRegistered(Date registered) {
+        this.registered = registered;
+    }
+
+    public void setExpired(Date expired) {
+        this.expired = expired;
     }
 }

@@ -1,5 +1,6 @@
 package com.sublink.api.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sublink.api.domain.contents.Genre;
@@ -7,9 +8,11 @@ import com.sublink.api.domain.contents.Genre;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserFavorite {
     public List<Genre> genres = new ArrayList<>();
     public List<String> keyWords = new ArrayList<>();
+    public List<Integer> videos = new ArrayList<>();
 
     public static UserFavorite parseJson(String input) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -40,5 +43,17 @@ public class UserFavorite {
 
     public List<String> getKeyWords() {
         return keyWords;
+    }
+
+    public List<Integer> getVideos() {
+        return videos;
+    }
+
+    public void setGenres(Map<Integer, Genre> genres) {
+        this.genres = genres;
+    }
+
+    public void setKeyWords(Map<Integer, String> keyWords) {
+        this.keyWords = keyWords;
     }
 }
