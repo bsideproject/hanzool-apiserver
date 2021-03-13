@@ -14,7 +14,7 @@ public class UserProfile {
     public String nickName;
     public String profilePath;
     public ArrayList<String> subsList = new ArrayList<>(); // FIXME: create Subscribe service class
-    public ArrayList<UserProfile> following = new ArrayList<>(); // FIXME: check type map or list
+    public ArrayList<UserProfile> following = new ArrayList<>();
     public ArrayList<UserProfile> followers = new ArrayList<>();
     public UserFavorite favorite;
     public Date registered;
