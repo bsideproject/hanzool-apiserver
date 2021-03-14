@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserAccount {
     String id;
-    String password; // todo: should encode
+    String password; // TODO: should encode
     String email;
 
     public static UserAccount parseJson(String input) {

@@ -4,6 +4,11 @@ server:
 logging:
   level:
     root: info
+    org:
+      springframework:
+        security: info
+        web: debug
+    springfox: debug
     com.sublink.api: debug
 
 spring:
@@ -12,3 +17,10 @@ spring:
       hibernate:
         format:
           sql: true
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: testlocal
+      username: admin
+      password: secret
