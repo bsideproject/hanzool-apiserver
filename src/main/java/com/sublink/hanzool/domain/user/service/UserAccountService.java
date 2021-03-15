@@ -1,10 +1,13 @@
-package com.sublink.api.service;
+package com.sublink.hanzool.domain.user.service;
 
-import com.sublink.api.domain.user.UserAccount;
+import com.sublink.hanzool.domain.user.model.UserAccount;
+import com.sublink.hanzool.domain.user.model.UserAccountDto;
 
-import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-@Service
-public class UserService {
-  // TODO: Implements user services
+public interface UserAccountService {
+  Mono<UserAccount> save(UserAccountDto userAccount);
+  Mono<UserAccount> findById(String id);
+  Flux<UserAccount> findAll();
 }

@@ -1,13 +1,15 @@
-package com.sublink.api;
+package com.sublink.hanzool;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.reactive.config.EnableWebFlux;
 
+@EnableWebFlux
 @SpringBootApplication
-public class SublinkApplication {
+public class HanzoolApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SublinkApplication.class, args);
+		SpringApplication.run(HanzoolApplication.class, args);
 	}
 
 }

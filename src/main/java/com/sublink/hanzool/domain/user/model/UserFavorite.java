@@ -1,44 +1,50 @@
-package com.sublink.api.domain.user;
+package com.sublink.hanzool.domain.user.model;
+
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sublink.api.domain.contents.Genre;
+import com.sublink.hanzool.domain.contents.Genre;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class UserFavorite {
-    public Map<Integer, Genre> genres = new HashMap(); //FIXME: check data type map or list
-    public Map<Integer, String> keyWords = new HashMap<>();
 
-    public static UserFavorite parseJson(String input) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        UserFavorite ret = null;
-        try {
-            ret = objectMapper.readValue(input, UserFavorite.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return ret;
-    }
+  @Id
+  private String id;
+  private Map<Integer, Genre> genres; // FIXME: check data type map or list
+  private Map<Integer, String> keyWords;
 
-    @Override
-    public String toString() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String ret = "";
-        try {
-            ret = objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return ret;
-    }
+  public Map<Integer, Genre> getGenres() {
+    return genres;
+  }
 
-    public Map<Integer, Genre> getGenres() {
-        return genres;
-    }
+  public Map<Integer, String> getKeyWords() {
+    return keyWords;
+  }
 
-    public Map<Integer, String> getKeyWords() {
-        return keyWords;
+  public static UserFavorite parseJson(String input) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    UserFavorite ret = null;
+    try {
+      ret = objectMapper.readValue(input, UserFavorite.class);
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
     }
+    return ret;
+  }
+
+  @Override
+  public String toString() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    String ret = "";
+    try {
+      ret = objectMapper.writeValueAsString(this);
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
+    return ret;
+  }
 }
