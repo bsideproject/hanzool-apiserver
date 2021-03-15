@@ -9,9 +9,13 @@ logging:
         security: info
         web: debug
     springfox: debug
-    com.sublink.api: debug
+    com.sublink.hanzool: debug
 
 spring:
+  devtools:
+    livereload:
+      enabled: true
+
   jpa:
     properties:
       hibernate:
@@ -22,5 +26,5 @@ spring:
       host: localhost
       port: 27017
       database: testlocal
-      username: admin
-      password: secret
+      username: user
+      password: pass

@@ -4,4 +4,4 @@ server:
 logging:
   level:
     root: warn
-    com.sublink.api: info
+    com.sublink.hanzool: info

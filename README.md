@@ -1,11 +1,11 @@
-# Sublink API Server
+# Hanzool API Server
 
-## 개발 환경
+## Development
 
 - Database
 
 ```bash
-./scripts/mongodb-local.sh
+sudo docker-compose --file=aio/mongo/docker-compose.yaml up --detach
 ```
 
 - API Server
@@ -14,11 +14,14 @@
 ./gradlew bootRun
 ```
 
-## Swagger
+## API
+
+- [swagger-ui](http://localhost:8888/swagger-ui/index.html)
 
 ```bash
-# http://localhost:8888/swagger-resources/
-# http://localhost:8888/swagger-resources/configuration/ui
-# http://localhost:8888/v2/api-docs
-http://localhost:8888/swagger-ui.html
+curl http://localhost:8888/swagger-resources/
+curl http://localhost:8888/swagger-resources/configuration/ui
+curl http://localhost:8888/v3/api-docs
 ```
+
+> Team Sublink
