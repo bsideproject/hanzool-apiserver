@@ -1,8 +1,11 @@
 package com.sublink.hanzool.domain.contents;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sublink.hanzool.utils.Utils;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Genre {
   public int getId() {
     return id;
@@ -43,13 +46,6 @@ public class Genre {
 
   @Override
   public String toString() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    String ret = "";
-    try {
-      ret = objectMapper.writeValueAsString(this);
-    } catch (JsonProcessingException e) {
-      e.printStackTrace();
-    }
-    return ret;
+    return Utils.toJsonString(this);
   }
 }

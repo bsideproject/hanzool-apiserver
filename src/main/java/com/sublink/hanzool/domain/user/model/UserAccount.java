@@ -1,13 +1,16 @@
 package com.sublink.hanzool.domain.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.sublink.hanzool.utils.Utils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "user")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserAccount {
 
   @Id
@@ -42,13 +45,6 @@ public class UserAccount {
 
   @Override
   public String toString() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    String ret = "";
-    try {
-      ret = objectMapper.writeValueAsString(this);
-    } catch (JsonProcessingException e) {
-      e.printStackTrace();
-    }
-    return ret;
+    return Utils.toJsonString(this);
   }
 }
